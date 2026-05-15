@@ -1,0 +1,56 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: ${vm.jbpm.db.url}
+    username: ${vm.jbpm.db.username}
+    password: ${vm.jbpm.db.password}
+    hikari:
+      idle-timeout: '30000'
+      maximum-pool-size: '10'
+      max-lifetime: '1800000'
+      connection-timeout: '20000'
+      minimum-idle: '5'
+
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    transaction-type: RESOURCE_LOCAL
+    generate-ddl: false
+    show-sql: false
+    mapping-resources:
+      - META-INF/Taskorm.xml
+      - META-INF/TaskAuditorm.xml
+      - META-INF/JBPMorm.xml
+    properties:
+      hibernate:
+        format_sql: true
+        id:
+          new_generator_mappings: true
+          optimizer:
+            pooled:
+              preferred: none
+  jta:
+    enabled: false
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration
+      - org.springframework.boot.autoconfigure.transaction.jta.NarayanaJtaConfiguration
+
+org:
+  kie:
+    api:
+      task:
+        UserGroupCallback: in.org.rebit.jbpm.services.RebitUserGroupCallBack
+
+#kavach:
+#  retrieve-users:
+#    url: ${vm.kavach.retrieve-users.url}
+#  retrieve-groups:
+#    url: ${vm.kavach.retrieve-groups.url}
+#  token: ${vm.kavach.token}

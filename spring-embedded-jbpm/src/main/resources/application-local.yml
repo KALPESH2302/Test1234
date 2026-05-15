@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@172.17.58.35:1524/NGCB_DEV
+    username: jbpm_spring
+    password: jbpm
+    hikari:
+      idle-timeout: '30000'
+      maximum-pool-size: '10'
+      max-lifetime: '1800000'
+      connection-timeout: '20000'
+      minimum-idle: '5'
+      keepalive-time: 15000          # ping idle conns every 15s
+      validation-timeout: 5000       # wait up to 5s for a validation
+#      connection-test-query: SELECT 1 from dual
+
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    transaction-type: RESOURCE_LOCAL
+    generate-ddl: false
+    show-sql: false
+    mapping-resources:
+      - META-INF/Taskorm.xml
+      - META-INF/TaskAuditorm.xml
+      - META-INF/JBPMorm.xml
+    properties:
+      hibernate:
+        format_sql: true
+        id:
+          new_generator_mappings: true
+          optimizer:
+            pooled:
+              preferred: none
+  jta:
+    enabled: false
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.transaction.jta.JtaAutoConfiguration
+      - org.springframework.boot.autoconfigure.transaction.jta.NarayanaJtaConfiguration
+
+org:
+  kie:
+    api:
+      task:
+        UserGroupCallback: in.org.rebit.jbpm.services.RebitUserGroupCallBack
+
+#kavach:
+#  retrieve-users:
+#    url: http://ngcb-kavach-backend-ngcb.apps.ocpcl.rebit.local/kavach/FIDDCFL/administrator/retrieve-users
+#  retrieve-groups:
+#    url: http://ngcb-kavach-backend-ngcb.apps.ocpcl.rebit.local/kavach/FIDDCFL/administrator/retrieve-usergroups
+#  token: eyJhbGciOiJIUzUxMiJ9.eyJyZWZyZXNoX3Rva2VuX2NpbSI6MTE0MCwic3ViIjoicm8ubWFrZXJtdW0iLCJsYXN0TG9naW4iOjE3NTMxNzkwMjc0OTUsIlNlY29uZEdyb3VwIjpbXSwiand0X3Rva2VuX2NpbSI6ODk5OTQwMDAwLCJ1c2VyQXR0cmlidXRlIjp7IlJvIENvZGUiOiIifSwiUm9sZXMiOlsiUk9fTUFLRVIiXSwicHJlZmVycmVkX3VzZXJuYW1lIjoicm9tYWtlcm11bV9jZmwiLCJyb0luZm8iOnsicm9Db2RlIjo0LCJyb05hbWUiOiJNdW1iYWkgUmVnaW9uYWwgT2ZmaWNlIn0sImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1JPX01BS0VSIn1dLCJyZWZyZXNoX3Rva2VuX2V4cCI6MTc1MzE4MDIzMDEzNCwicmVmcmVzaF90b2tlbl9pYXQiOjE3NTMxNzkwMzAxNjYsInVzZXJHcm91cHMiOlt7Imdyb3VwSWQiOjYxLCJncm91cE5hbWUiOiJST19NQUtFUiJ9XSwiaXNEZWZhdWx0UGFzc3dvcmQiOmZhbHNlLCJyZWFsbSI6IkZJRERDRkwiLCJGaXJzdEdyb3VwSWQiOiIiLCJyb2xlc0RldGFpbHMiOlt7InJvbGVJZCI6NDY0LCJyb2xlTmFtZSI6IlJPX01BS0VSIiwibW9kdWxlRGV0YWlscyI6bnVsbCwibW9kdWxlcyI6W119XSwiZXhwIjoxNzU0MDc5MDMwLCJpYXQiOjE3NTMxNzkwMzAsImlzUkJJVXNlciI6MX0.l5HpctOYrMcnersVWzKb3e92MhLhjdrK6A2ll8OBkdtU_1farcrdELq8a3r63O9GYik1xhuHqCrce9MXOngGPw

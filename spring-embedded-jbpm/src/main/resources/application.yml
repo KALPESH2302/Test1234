@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: ${profile_active}
+  application:
+    name: spring-embedded-bpmn
+  jpa:
+    properties:
+        hibernate:
+          query:
+            fail_on_missing_entity: false
